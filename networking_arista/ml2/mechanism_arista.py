@@ -327,7 +327,7 @@ class AristaDriver(driver_api.MechanismDriver):
         physnet = None
 
         for segment in context.segments_to_bind:
-            if segment[driver_api.PHYSICAL_NETWORK] in self.physical_networks:
+            if self._is_in_managed_physnets(segment[driver_api.PHYSICAL_NETWORK])
                 physnet =  segment[driver_api.PHYSICAL_NETWORK]
                 LOG.debug("Found managed physical network on segment %s "
                           "switches. Physical Network = %s",
