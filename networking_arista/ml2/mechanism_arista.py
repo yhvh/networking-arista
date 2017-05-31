@@ -323,7 +323,20 @@ class AristaDriver(driver_api.MechanismDriver):
         host_id = context.host
         port = context.current
         physnet_info = self.eapi.get_physical_network(host_id)
-        physnet = physnet_info.get('physnet')
+
+        physnet = None
+
+        for segment in context.segments_to_bind:
+            if segment[driver_api.PHYSICAL_NETWORK] in self.physical_networks:
+                physnet =  segment[driver_api.PHYSICAL_NETWORK]
+                LOG.debug("Found managed physical network on segment %s "
+                          "switches. Physical Network = %s",
+                          segment,physnet)
+                break
+
+        if not physnet:
+            physnet = physnet_info.get('physnet')
+
         switch_id = physnet_info.get('switch_id')
         if not physnet or not switch_id:
             if port.get('binding:vnic_type') == portbindings.VNIC_BAREMETAL:
