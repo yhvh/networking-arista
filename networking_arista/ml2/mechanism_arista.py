@@ -332,21 +332,23 @@ class AristaDriver(driver_api.MechanismDriver):
                 LOG.debug("Found managed physical network on segment %s "
                           "switches. Physical Network = %s",
                           segment,physnet)
+                physnet_info['physnet'] = physnet
                 break
 
         if not physnet:
             physnet = physnet_info.get('physnet')
 
         switch_id = physnet_info.get('switch_id')
-        if not physnet or not switch_id:
-            if port.get('binding:vnic_type') == portbindings.VNIC_BAREMETAL:
-                # Find physnet using link_local_information in baremetal case
-                physnet = self._get_physnet_from_link_info(port, physnet_info)
-            else:
-                LOG.debug("The host %(host)s not connected to arista "
-                          "switches. Physical Network info = %(pi)s",
-                          {'host': host_id, 'pi': physnet_info})
-                return
+
+        # if not physnet or not switch_id:
+        #     if port.get('binding:vnic_type') == portbindings.VNIC_BAREMETAL:
+        #         # Find physnet using link_local_information in baremetal case
+        #         physnet = self._get_physnet_from_link_info(port, physnet_info)
+        #     else:
+        #         LOG.debug("The host %(host)s not connected to arista "
+        #                   "switches. Physical Network info = %(pi)s",
+        #                   {'host': host_id, 'pi': physnet_info})
+        #         return
 
         if not physnet or not self._is_in_managed_physnets(physnet):
             LOG.debug("bind_port for port %(port)s: physical_network "
