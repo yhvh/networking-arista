@@ -340,17 +340,9 @@ class AristaDriver(driver_api.MechanismDriver):
             if not physnet:
                 LOG.debug("bind_port for port %(port)s: no physical_network "
                           "found", {'port': port.get('id')})
-        if not physnet or not self._is_in_managed_physnets(physnet):
-            LOG.debug("bind_port for port %(port)s: physical_network "
-                      "%(physnet)s is not managed by Arista "
-                      "mechanism driver", {'port': port.get('id'),
-                                           'physnet': physnet})
-            return
 
-        for segment in context.segments_to_bind:
-            if not self._is_in_managed_physnets(
-                segment.get(driver_api.PHYSICAL_NETWORK)):
                 continue
+
             if segment[driver_api.NETWORK_TYPE] == p_const.TYPE_VXLAN:
                 # Check if CVX supports HPB
                 if not self.rpc.hpb_supported():
@@ -424,7 +416,7 @@ class AristaDriver(driver_api.MechanismDriver):
         """
         if not self.managed_physnets:
             return [binding_level.get(driver_api.BOUND_SEGMENT) for
-                    binding_level in context.binding_levels]
+                    binding_level in context.binding_levels or []]
 
         bound_segments = []
         for binding_level in (context.binding_levels or []):
