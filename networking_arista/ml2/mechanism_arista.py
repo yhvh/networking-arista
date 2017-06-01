@@ -347,10 +347,6 @@ class AristaDriver(driver_api.MechanismDriver):
                                            'physnet': physnet})
             return
 
-        LOG.debug("bind_port for port %(port)s: physical_network=%(physnet)s,"
-                  "switch_id=%(swid)s", {'port': port.get('id'),
-                                         'physnet': physnet,
-                                         'swid': switch_id})
         for segment in context.segments_to_bind:
             if not self._is_in_managed_physnets(
                 segment.get(driver_api.PHYSICAL_NETWORK)):
