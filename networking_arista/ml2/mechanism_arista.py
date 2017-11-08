@@ -32,6 +32,9 @@ from networking_arista.common import exceptions as arista_exc
 from networking_arista.ml2 import arista_ml2
 from networking_arista.ml2 import sec_group_callback
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 LOG = logging.getLogger(__name__)
 
 # Messages

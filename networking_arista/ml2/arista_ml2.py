@@ -35,6 +35,9 @@ from networking_arista.common import db_lib
 from networking_arista.common import exceptions as arista_exc
 from networking_arista.ml2 import arista_sec_gp
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 LOG = logging.getLogger(__name__)
 
 EOS_UNREACHABLE_MSG = _('Unable to reach EOS')

@@ -23,6 +23,9 @@ from neutron.callbacks import resources
 
 from networking_arista._i18n import _LE
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 LOG = logging.getLogger(__name__)
 
 
